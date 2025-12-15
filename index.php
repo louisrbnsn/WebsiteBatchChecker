@@ -26,10 +26,10 @@ $basePath = dirname($_SERVER['SCRIPT_NAME']);
 if ($basePath !== '/') {
     $request = str_replace($basePath, '', $request);
 }
-$request = strtok($request, '? ');
+$request = strtok($request, '?');
 
 // Router avec IF
-if ($request === '/' || $request === '/batches') {
+if ($request === '/' || $request === '/batches' || $request === '') {
     $controller = new BatchController();
     $controller->index();
     
