@@ -2,10 +2,11 @@
 // Router principal
 session_start();
 
-// Charger Database en premier (OBLIGATOIRE)
+// Charger les configurations
 require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/config/helpers.php';
 
-// Autoloader simple pour le reste
+// Autoloader simple
 spl_autoload_register(function ($class) {
     $paths = [
         __DIR__ . '/models/' . $class . '.php',
@@ -27,57 +28,49 @@ if ($basePath !== '/') {
     $request = str_replace($basePath, '', $request);
 }
 $request = strtok($request, '?');
+$method = $_SERVER['REQUEST_METHOD'];
 
-// Router avec IF
-if ($request === '/' || $request === '/batches' || $request === '') {
-    $controller = new BatchController();
-    $controller->index();
+// Table de routage
+$routes = [
+    'GET /' => ['BatchController', 'index'],
+    'GET /batches' => ['BatchController', 'index'],
+    'GET /batches/create' => ['BatchController', 'create'],
+    'POST /batches/create' => ['BatchController', 'store'],
+    'GET /batches/(\d+)' => ['BatchController', 'show'],
+    'GET /batches/delete/(\d+)' => ['BatchController', 'delete'],
+    'GET /batches/checkall/(\d+)' => ['WebsiteController', 'checkAll'],
+    'GET /websites/create/(\d+)' => ['WebsiteController', 'create'],
+    'POST /websites/create/(\d+)' => ['WebsiteController', 'store'],
+    'GET /websites/edit/(\d+)' => ['WebsiteController', 'edit'],
+    'POST /websites/edit/(\d+)' => ['WebsiteController', 'update'],
+    'GET /websites/delete/(\d+)' => ['WebsiteController', 'delete'],
+    'GET /websites/check/(\d+)' => ['WebsiteController', 'checkOne'],
+];
+
+// Matcher les routes
+foreach ($routes as $route => $handler) {
+    list($routeMethod, $pattern) = explode(' ', $route, 2);
     
-} elseif ($request === '/batches/create') {
-    $controller = new BatchController();
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $controller->store();
-    } else {
-        $controller->create();
+    if ($routeMethod !== $method) {
+        continue;
     }
     
-} elseif (preg_match('/^\/batches\/(\d+)$/', $request, $matches)) {
-    $controller = new BatchController();
-    $controller->show($matches[1]);
-    
-} elseif (preg_match('/^\/batches\/delete\/(\d+)$/', $request, $matches)) {
-    $controller = new BatchController();
-    $controller->delete($matches[1]);
-    
-} elseif (preg_match('/^\/websites\/create\/(\d+)$/', $request, $matches)) {
-    $controller = new WebsiteController();
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $controller->store($matches[1]);
-    } else {
-        $controller->create($matches[1]);
+    // Route exacte
+    if ($pattern === $request) {
+        $controller = new $handler[0]();
+        $controller->{$handler[1]}();
+        exit;
     }
     
-} elseif (preg_match('/^\/websites\/edit\/(\d+)$/', $request, $matches)) {
-    $controller = new WebsiteController();
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $controller->update($matches[1]);
-    } else {
-        $controller->edit($matches[1]);
+    // Route avec regex
+    if (preg_match('#^' . $pattern . '$#', $request, $matches)) {
+        array_shift($matches); // Enlever le match complet
+        $controller = new $handler[0]();
+        call_user_func_array([$controller, $handler[1]], $matches);
+        exit;
     }
-    
-} elseif (preg_match('/^\/websites\/delete\/(\d+)$/', $request, $matches)) {
-    $controller = new WebsiteController();
-    $controller->delete($matches[1]);
-    
-} elseif (preg_match('/^\/websites\/check\/(\d+)$/', $request, $matches)) {
-    $controller = new WebsiteController();
-    $controller->checkOne($matches[1]);
-    
-} elseif (preg_match('/^\/batches\/checkall\/(\d+)$/', $request, $matches)) {
-    $controller = new WebsiteController();
-    $controller->checkAll($matches[1]);
-    
-} else {
-    http_response_code(404);
-    echo "404 - Page non trouvée";
 }
+
+// 404
+http_response_code(404);
+echo "404 - Page non trouvée";

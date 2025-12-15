@@ -7,8 +7,7 @@ class WebsiteController {
         
         if (!$batch) {
             $_SESSION['error'] = "Batch introuvable";
-            header('Location: /WebsiteBatchChecker/batches');
-            exit;
+            redirect('/batches');
         }
         
         $isEdit = false;
@@ -29,8 +28,7 @@ class WebsiteController {
             $_SESSION['error'] = "L'URL est obligatoire";
         }
         
-        header('Location: /WebsiteBatchChecker/batches/' . $batchId);
-        exit;
+        redirect('/batches/' . $batchId);
     }
     
     // Formulaire modification
@@ -40,8 +38,7 @@ class WebsiteController {
         
         if (!$website) {
             $_SESSION['error'] = "Site introuvable";
-            header('Location: /WebsiteBatchChecker/batches');
-            exit;
+            redirect('/batches');
         }
         
         $batchModel = new Batch();
@@ -61,8 +58,7 @@ class WebsiteController {
         
         if (!$website) {
             $_SESSION['error'] = "Site introuvable";
-            header('Location: /WebsiteBatchChecker/batches');
-            exit;
+            redirect('/batches');
         }
         
         if (!empty($url)) {
@@ -72,8 +68,7 @@ class WebsiteController {
             $_SESSION['error'] = "L'URL est obligatoire";
         }
         
-        header('Location: /WebsiteBatchChecker/batches/' . $website['batch_id']);
-        exit;
+        redirect('/batches/' . $website['batch_id']);
     }
     
     // Supprimer un site
@@ -85,12 +80,11 @@ class WebsiteController {
             $batchId = $website['batch_id'];
             $websiteModel->delete($id);
             $_SESSION['success'] = "Site supprimé avec succès";
-            header('Location: /WebsiteBatchChecker/batches/' . $batchId);
+            redirect('/batches/' . $batchId);
         } else {
             $_SESSION['error'] = "Site introuvable";
-            header('Location: /WebsiteBatchChecker/batches');
+            redirect('/batches');
         }
-        exit;
     }
     
     // Vérifier un site
@@ -101,12 +95,11 @@ class WebsiteController {
         if ($website) {
             $websiteModel->checkStatus($id);
             $_SESSION['success'] = "Vérification effectuée";
-            header('Location: /WebsiteBatchChecker/batches/' . $website['batch_id']);
+            redirect('/batches/' . $website['batch_id']);
         } else {
             $_SESSION['error'] = "Site introuvable";
-            header('Location: /WebsiteBatchChecker/batches');
+            redirect('/batches');
         }
-        exit;
     }
     
     // Vérifier tous les sites d'un batch
@@ -115,7 +108,6 @@ class WebsiteController {
         $websiteModel->checkAllByBatch($batchId);
         $_SESSION['success'] = "Tous les sites ont été vérifiés";
         
-        header('Location: /WebsiteBatchChecker/batches/' . $batchId);
-        exit;
+        redirect('/batches/' . $batchId);
     }
 }
