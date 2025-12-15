@@ -38,7 +38,7 @@
 <body>
     <nav class="navbar navbar-dark mb-4">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/WebsiteBatchChecker/batches">
+            <a class="navbar-brand" href="<?php echo url('/batches'); ?>">
                 <strong>Website Batch Checker</strong>
             </a>
         </div>

@@ -26,8 +26,7 @@ class BatchController {
             $_SESSION['error'] = "Tous les champs sont obligatoires";
         }
         
-        header('Location: /WebsiteBatchChecker/batches');
-        exit;
+        redirect('/batches');
     }
     
     // Afficher un batch et ses sites
@@ -37,8 +36,7 @@ class BatchController {
         
         if (!$batch) {
             $_SESSION['error'] = "Batch introuvable";
-            header('Location: /WebsiteBatchChecker/batches');
-            exit;
+            redirect('/batches');
         }
         
         $websites = $batchModel->getWebsites($id);
@@ -52,7 +50,6 @@ class BatchController {
         $batch->delete($id);
         $_SESSION['success'] = "Batch supprimé avec succès";
         
-        header('Location: /WebsiteBatchChecker/batches');
-        exit;
+        redirect('/batches');
     }
 }

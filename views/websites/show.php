@@ -8,9 +8,9 @@ ob_start();
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2 class="card-title">Batch:  <?php echo htmlspecialchars($batch['name']); ?></h2>
             <div>
-                <a href="/WebsiteBatchChecker/batches" class="btn btn-secondary">← Retour</a>
-                <a href="/WebsiteBatchChecker/batches/checkall/<?php echo $batch['id']; ?>" class="btn btn-info">Vérifier tous</a>
-                <a href="/WebsiteBatchChecker/websites/create/<?php echo $batch['id']; ?>" class="btn btn-primary">+ Ajouter un site</a>
+                <a href="<?php echo url('/batches'); ?>" class="btn btn-secondary">← Retour</a>
+                <a href="<?php echo url('/batches/checkall/' . $batch['id']); ?>" class="btn btn-info">Vérifier tous</a>
+                <a href="<?php echo url('/websites/create/' . $batch['id']); ?>" class="btn btn-primary">+ Ajouter un site</a>
             </div>
         </div>
 
@@ -48,11 +48,11 @@ ob_start();
                                     <?php echo $website['last_checked'] ? date('Y-m-d H:i', strtotime($website['last_checked'])) : '-'; ?>
                                 </td>
                                 <td>
-                                    <a href="/WebsiteBatchChecker/websites/check/<?php echo $website['id']; ?>" 
+                                    <a href="<?php echo url('/websites/check/' . $website['id']); ?>" 
                                        class="btn btn-sm btn-info">Vérifier</a>
-                                    <a href="/WebsiteBatchChecker/websites/edit/<?php echo $website['id']; ?>" 
+                                    <a href="<?php echo url('/websites/edit/' . $website['id']); ?>" 
                                        class="btn btn-sm btn-warning">Modif</a>
-                                    <a href="/WebsiteBatchChecker/websites/delete/<?php echo $website['id']; ?>" 
+                                    <a href="<?php echo url('/websites/delete/' . $website['id']); ?>" 
                                        class="btn btn-sm btn-danger"
                                        onclick="return confirm('Supprimer ce site ? ')">Suppr</a>
                                 </td>
