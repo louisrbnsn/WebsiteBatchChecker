@@ -1,4 +1,4 @@
-<? php
+<?php
 $title = 'Nouveau batch';
 ob_start();
 ?>
@@ -7,7 +7,7 @@ ob_start();
     <div class="card-body">
         <h2 class="card-title mb-4">Nouveau batch</h2>
 
-        <form method="POST" action="/batches/create">
+        <form method="POST" action="/WebsiteBatchChecker/batches/create">
             <div class="mb-3">
                 <label for="name" class="form-label">Nom</label>
                 <input type="text" class="form-control" id="name" name="name" required>
@@ -20,7 +20,7 @@ ob_start();
             </div>
 
             <div class="d-flex gap-2">
-                <a href="/batches" class="btn btn-secondary">Annuler</a>
+                <a href="/WebsiteBatchChecker/batches" class="btn btn-secondary">Annuler</a>
                 <button type="submit" class="btn btn-primary">Créer</button>
             </div>
         </form>

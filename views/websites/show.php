@@ -6,11 +6,11 @@ ob_start();
 <div class="card">
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="card-title">Batch:  <?= htmlspecialchars($batch['name']) ?></h2>
+            <h2 class="card-title">Batch:  <?php echo htmlspecialchars($batch['name']); ?></h2>
             <div>
-                <a href="/batches" class="btn btn-secondary">← Retour</a>
-                <a href="/batches/checkall/<?= $batch['id'] ?>" class="btn btn-info">Vérifier tous</a>
-                <a href="/websites/create/<?= $batch['id'] ?>" class="btn btn-primary">+ Ajouter un site</a>
+                <a href="/WebsiteBatchChecker/batches" class="btn btn-secondary">← Retour</a>
+                <a href="/WebsiteBatchChecker/batches/checkall/<?php echo $batch['id']; ?>" class="btn btn-info">Vérifier tous</a>
+                <a href="/WebsiteBatchChecker/websites/create/<?php echo $batch['id']; ?>" class="btn btn-primary">+ Ajouter un site</a>
             </div>
         </div>
 
@@ -33,31 +33,31 @@ ob_start();
                     <?php else: ?>
                         <?php foreach ($websites as $website): ?>
                             <tr>
-                                <td><?= htmlspecialchars($website['id']) ?></td>
-                                <td><?= htmlspecialchars($website['url']) ?></td>
+                                <td><?php echo htmlspecialchars($website['id']); ?></td>
+                                <td><?php echo htmlspecialchars($website['url']); ?></td>
                                 <td>
                                     <?php if ($website['status']): ?>
-                                        <span class="badge <? = WebsiteStatus::getBadgeClass($website['status']) ?>">
-                                            <?= htmlspecialchars($website['status']) ?>
+                                        <span class="badge <?php echo WebsiteStatus::getBadgeClass($website['status']); ?>">
+                                            <?php echo htmlspecialchars($website['status']); ?>
                                         </span>
                                     <?php else: ?>
                                         <span class="badge bg-secondary">Non vérifié</span>
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <?= $website['last_checked'] ? date('Y-m-d H:i', strtotime($website['last_checked'])) : '-' ?>
+                                    <?php echo $website['last_checked'] ? date('Y-m-d H:i', strtotime($website['last_checked'])) : '-'; ?>
                                 </td>
                                 <td>
-                                    <a href="/websites/check/<?= $website['id'] ?>" 
+                                    <a href="/WebsiteBatchChecker/websites/check/<?php echo $website['id']; ?>" 
                                        class="btn btn-sm btn-info">Vérifier</a>
-                                    <a href="/websites/edit/<?= $website['id'] ?>" 
+                                    <a href="/WebsiteBatchChecker/websites/edit/<?php echo $website['id']; ?>" 
                                        class="btn btn-sm btn-warning">Modif</a>
-                                    <a href="/websites/delete/<?= $website['id'] ? >" 
+                                    <a href="/WebsiteBatchChecker/websites/delete/<?php echo $website['id']; ?>" 
                                        class="btn btn-sm btn-danger"
                                        onclick="return confirm('Supprimer ce site ? ')">Suppr</a>
                                 </td>
                             </tr>
-                        <? php endforeach; ?>
+                        <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
             </table>
@@ -65,7 +65,7 @@ ob_start();
     </div>
 </div>
 
-<? php
+<?php
 $content = ob_get_clean();
 require_once __DIR__ . '/../layouts/main.php';
 ?>

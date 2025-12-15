@@ -26,7 +26,7 @@ class BatchController {
             $_SESSION['error'] = "Tous les champs sont obligatoires";
         }
         
-        header('Location: /batches');
+        header('Location: /WebsiteBatchChecker/batches');
         exit;
     }
     
@@ -37,7 +37,7 @@ class BatchController {
         
         if (!$batch) {
             $_SESSION['error'] = "Batch introuvable";
-            header('Location: /batches');
+            header('Location: /WebsiteBatchChecker/batches');
             exit;
         }
         
@@ -52,7 +52,7 @@ class BatchController {
         $batch->delete($id);
         $_SESSION['success'] = "Batch supprimé avec succès";
         
-        header('Location: /batches');
+        header('Location: /WebsiteBatchChecker/batches');
         exit;
     }
 }
