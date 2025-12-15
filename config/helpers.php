@@ -10,6 +10,11 @@
  * @return string The full URL with base path
  */
 function url($path) {
+    // Validate path starts with /
+    if (!is_string($path) || strlen($path) === 0 || $path[0] !== '/') {
+        $path = '/' . ltrim($path, '/');
+    }
+    
     $basePath = dirname($_SERVER['SCRIPT_NAME']);
     if ($basePath === '/') {
         return $path;

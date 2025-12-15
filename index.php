@@ -42,13 +42,15 @@ foreach ($routes as $route => $handler) {
     list($routeMethod, $pattern) = explode(' ', $route, 2);
     if ($routeMethod !== $method) continue;
     
-    if ($pattern === $request) {
+    $hasRegex = strpos($pattern, '(') !== false;
+    
+    if (!$hasRegex && $pattern === $request) {
         $controller = new $handler[0]();
         $controller->{$handler[1]}();
         exit;
     }
     
-    if (preg_match('#^' . $pattern . '$#', $request, $matches)) {
+    if ($hasRegex && preg_match('#^' . $pattern . '$#', $request, $matches)) {
         array_shift($matches);
         $controller = new $handler[0]();
         call_user_func_array([$controller, $handler[1]], $matches);
